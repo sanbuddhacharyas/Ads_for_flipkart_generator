@@ -745,11 +745,14 @@ total_im = sorted(total_im)
 try:
     load_from_csv  = pd.read_csv(csv_path, usecols=['DetectedCategory', 'DetectedRGB', 'DetectedPercent', 'DetectedHSV', 'DetectedHSVGroup', 'DetectedConf', 'DetectedGender','Detectedbbox', 'Duplicates', 'ads_id', 'person'])
     start = len(load_from_csv)
+    print("Resume")
 
 except:
     start = 0
+    load_from_csv  = pd.DataFrame(columns=['DetectedCategory', 'DetectedRGB', 'DetectedPercent', 'DetectedHSV', 'DetectedHSVGroup', 'DetectedConf', 'DetectedGender','Detectedbbox', 'Duplicates', 'ads_id', 'person'])
     pass
 
+print(f"start=>{start}")
 for ind, v in tqdm(enumerate(total_im[start:])):
     raw_path = os.path.join(raw_img_path,v)
     print(raw_path)
@@ -758,49 +761,14 @@ for ind, v in tqdm(enumerate(total_im[start:])):
         f_idd, f_pp = VideoAnalytics_person(raw_path)
     except:
         continue
-    
-    ffid.append(f_idd)
-    ffpp.append(f_pp)
-    ds.append(check_cat(cates[0], detec_bbox[0]))
-    cs.append(cates[0])
-    dfs.append(detec_conf[0])
-    dr.append(detec_gender[0])
-    dx.append(detec_bbox[0])
-    dl.append(detec_col[0])
-    dpr.append(detec_per[0])
-    dv.append(detec_hsv[0])
-    dg.append(detec_hsv_g[0])
-    
-    if (ind + 1)%1000==0:
-        d = pd.DataFrame()
-        d['DetectedCategory'] = cs
-        d['DetectedRGB'] = dl
-        d['DetectedPercent'] = dpr
-        d['DetectedHSV'] = dv
-        d['DetectedHSVGroup'] = dg 
-        d['DetectedConf'] = dfs
-        d['DetectedGender'] = dr
-        d['Detectedbbox'] = dx
-        d['Duplicates'] = ds
-        d['ads_id'] = ffid
-        d['person'] = ffpp
-        d.to_csv(os.path.join(csv_path), index=False)
-        
 
+    load_from_csv = load_from_csv.append({'DetectedCategory':cates[0], 'DetectedRGB':detec_col[0], 'DetectedPercent':detec_per[0], 'DetectedHSV':detec_hsv[0], 'DetectedHSVGroup':detec_hsv_g[0], 'DetectedConf':dfs, 'DetectedGender':detec_gender[0],'Detectedbbox':detec_bbox[0], 'Duplicates':check_cat(cates[0], detec_bbox[0]), 'ads_id':f_idd, 'person':f_pp}, ignore_index=True)
 
-d = pd.DataFrame()
-d['DetectedCategory'] = cs
-d['DetectedRGB'] = dl
-d['DetectedPercent'] = dpr
-d['DetectedHSV'] = dv
-d['DetectedHSVGroup'] = dg 
-d['DetectedConf'] = dfs
-d['DetectedGender'] = dr
-d['Detectedbbox'] = dx
-d['Duplicates'] = ds
-d['ads_id'] = ffid
-d['person'] = ffpp
-d.to_csv(os.path.join(csv_path), index=False)
+    if (ind + 1)%1==0:
+        print("saved")
+        load_from_csv.to_csv(os.path.join(csv_path), index=False)
+
+load_from_csv.to_csv(os.path.join(csv_path), index=False)
 
 
 
