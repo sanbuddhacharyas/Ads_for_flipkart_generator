@@ -1,0 +1,6 @@
+*.pt
+*.csv
+*.pth
+rembg/u2net/weights
+*.jpg
+raw/
