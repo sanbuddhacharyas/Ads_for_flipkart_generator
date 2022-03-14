@@ -744,16 +744,13 @@ ffpp = []
 total_im = sorted(total_im)
 try:
     load_from_csv  = pd.read_csv(csv_path, usecols=['DetectedCategory', 'DetectedRGB', 'DetectedPercent', 'DetectedHSV', 'DetectedHSVGroup', 'DetectedConf', 'DetectedGender','Detectedbbox', 'Duplicates', 'ads_id', 'person'])
-    processed_list = load_from_csv['ads_id'].to_list()
-    print(processed_list)
+    start = len(load_from_csv)
 
 except:
-    processed_list = []
+    start = 0
     pass
 
-for ind, v in tqdm(enumerate(total_im)):
-    if v.split('/')[-1].split('.')[0] in processed_list:
-        continue
+for ind, v in tqdm(enumerate(total_im[start:])):
     raw_path = os.path.join(raw_img_path,v)
     print(raw_path)
     try:
