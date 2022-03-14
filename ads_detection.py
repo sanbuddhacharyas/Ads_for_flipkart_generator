@@ -774,7 +774,7 @@ for ind, v in tqdm(enumerate(total_im)):
     dv.append(detec_hsv[0])
     dg.append(detec_hsv_g[0])
     
-    if (ind + 1)%10==0:
+    if (ind + 1)%1000==0:
         d = pd.DataFrame()
         d['DetectedCategory'] = cs
         d['DetectedRGB'] = dl
