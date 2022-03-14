@@ -764,7 +764,7 @@ for ind, v in tqdm(enumerate(total_im[start:])):
 
     load_from_csv = load_from_csv.append({'DetectedCategory':cates[0], 'DetectedRGB':detec_col[0], 'DetectedPercent':detec_per[0], 'DetectedHSV':detec_hsv[0], 'DetectedHSVGroup':detec_hsv_g[0], 'DetectedConf':dfs, 'DetectedGender':detec_gender[0],'Detectedbbox':detec_bbox[0], 'Duplicates':check_cat(cates[0], detec_bbox[0]), 'ads_id':f_idd, 'person':f_pp}, ignore_index=True)
 
-    if (ind + 1)%1==0:
+    if (ind + 1)%100==0:
         print("saved")
         load_from_csv.to_csv(os.path.join(csv_path), index=False)
 
